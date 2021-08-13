@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Skribblio Practice</title>
+        <title>Grid Drawer</title>
         <link rel="stylesheet" href="style.css">
         <script src="script.js" defer></script>
     </head>
     <body>
-        <h1>Skribbl.io Practice</h1>
+        <h1>Grid Drawer</h1>
         <div id="main">
             <div id="sidebar">
                 <div>
@@ -26,8 +26,10 @@
                 <button>Shading</button>
                 <button>Lighten</button>
 
-                <button>Grid Size</button>
-                <button id="grid_line">Grid Lines</button>
+                <div>
+                    <input type="range" min="10" max="100" value="50" id="slider">
+                    <label for="slider" id="slider_label">Grid Size: 50</label>
+                </div>
                 <button id="clear">Clear</button>
             </div>
             <div id="grids"></div>

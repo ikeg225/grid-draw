@@ -21,12 +21,11 @@
 #grids {
     flex-basis: 80%;
     display: grid;
-    grid-template-columns: repeat(20, 1fr);
+    grid-template-columns: repeat(50, 1fr);
     grid-gap: 0px;
     border: 1px solid black;
 }
 
 #grids div {
     aspect-ratio: 1;
-    border-color: rgb(0, 0, 0);
 }

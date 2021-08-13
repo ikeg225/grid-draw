@@ -1,8 +1,9 @@
 // Global Variables
-const grid = document.querySelector("#grids");
+let grid = document.querySelector("#grids");
 let leftMouseButtonOnlyDown = false;
 let back_color = "#FFFFFF";
 let pen_color = "#000000";
+let grid_num = 50;
 
 // Checking if Left Click is Down
 function setLeftButtonState(e) {
@@ -16,51 +17,15 @@ document.body.onmousemove = setLeftButtonState;
 document.body.onmouseup = setLeftButtonState;
 
 // Creates the Grid
-for (i = 0; i < 20 * 20; i++) {
-    const div = document.createElement('div');
-    grid.appendChild(div);
-};
+function grider(num) {
+    for (i = 0; i < num * num; i++) {
+        const div = document.createElement('div');
+        div.setAttribute("style", "background-color: " + back_color);
+        grid.appendChild(div);
+    };
+}
 
-// Draws color on the Grid
-const allDivs = grid.querySelectorAll('div');
-function color(clr) {
-    allDivs.forEach((divs) => {
-        divs.addEventListener('mouseover', () => {
-            if (leftMouseButtonOnlyDown) {
-                divs.style.background = clr;
-            }
-        });
-    });
-};
-
-color(pen_color);
-
-// Erases on the Grid
-const eraser = document.querySelector("#eraser");
-eraser.addEventListener('mouseover', () => {
-    color(back_color);
-});
-
-// Clears the Grid
-const clear = document.querySelector("#clear");
-clear.addEventListener('click', () => {
-    allDivs.forEach((divs) => {
-        divs.style.background = back_color;
-    });
-});
-
-// Changes Pen Color
-const pen = document.querySelector("#pen");
-pen.addEventListener("change", () => {
-    pen_color = pen.value;
-    color(pen_color);
-});
-
-// Select Pen
-const pen_sel = document.querySelector("#pen_use");
-pen_sel.addEventListener("click", () => {
-    color(pen_color);
-})
+grider(grid_num)
 
 // Checks if Two Colors Are the same (Hex and RGBA are Different Formats)
 function equal_color(rgb_clr, color2) {
@@ -71,22 +36,76 @@ function equal_color(rgb_clr, color2) {
     return hexToRgb(color2) == rgb_clr
 };
 
-// Changes Background Color
-const back = document.querySelector("#back");
-back.addEventListener("change", () => {
-    allDivs.forEach((divs) => {
-        if (!divs.style.background || equal_color(divs.style.background, back_color)) {
-            divs.style.background = back.value;
-        } 
-    });
-    back_color = back.value;
-    color(pen_color);
-});
+// Needed to add this because when grid size is changed, the div variables are also changed
+function rerun() {
+    // Draws color on the Grid
+    const allDivs = grid.querySelectorAll('div');
+    function color(clr) {
+        allDivs.forEach((divs) => {
+            divs.addEventListener('mouseover', () => {
+                if (leftMouseButtonOnlyDown) {
+                    divs.style.background = clr;
+                }
+            });
+        });
+    };
 
-// Add or Remove Grid Lines
-const grid_line = document.querySelector("#grid_line");
-grid_line.addEventListener("click", () => {
-    allDivs.forEach((divs) => {
-        console.log();
+    color(pen_color);
+
+    // Erases on the Grid
+    const eraser = document.querySelector("#eraser");
+    eraser.addEventListener('mouseover', () => {
+        color(back_color);
     });
+
+    // Clears the Grid
+    const clear = document.querySelector("#clear");
+    clear.addEventListener('click', () => {
+        allDivs.forEach((divs) => {
+            divs.style.background = back_color;
+        });
+    });
+
+    // Changes Pen Color
+    const pen = document.querySelector("#pen");
+    pen.addEventListener("change", () => {
+        pen_color = pen.value;
+        color(pen_color);
+    });
+
+    // Select Pen
+    const pen_sel = document.querySelector("#pen_use");
+    pen_sel.addEventListener("click", () => {
+        color(pen_color);
+    })
+
+    // Changes Background Color
+    const back = document.querySelector("#back");
+    back.addEventListener("change", () => {
+        allDivs.forEach((divs) => {
+            if (!divs.style.background || equal_color(divs.style.background, back_color)) {
+                divs.style.background = back.value;
+            } 
+        });
+        back_color = back.value;
+        color(pen_color);
+    });
+}
+
+rerun();
+
+// Changes Grid Size
+const grid_size = document.querySelector("#slider");
+grid_size.addEventListener("change", () => {
+    const txt = document.getElementById("slider_label")
+    grid_num = grid_size.value
+    txt.innerHTML = "Grid Size: " + grid_num;
+
+    const grids = document.getElementById("grids");
+    grids.innerHTML = '';
+    grids.style.gridTemplateColumns = "repeat(" + grid_num + ", 1fr)";
+    grider(grid_num);
+
+    grid = document.querySelector("#grids");
+    rerun();
 });
