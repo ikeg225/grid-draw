@@ -39,8 +39,10 @@ function equal_color(rgb_clr, color2) {
 // Needed to add this because when grid size is changed, the div variables are also changed
 function rerun() {
     // Draws color on the Grid
-    const allDivs = grid.querySelectorAll('div');
+    let allDivs = grid.querySelectorAll('div');
+    
     function color(clr) {
+        allDivs = grid.querySelectorAll('div');
         allDivs.forEach((divs) => {
             divs.addEventListener('mouseover', () => {
                 if (leftMouseButtonOnlyDown) {
@@ -61,9 +63,11 @@ function rerun() {
     // Clears the Grid
     const clear = document.querySelector("#clear");
     clear.addEventListener('click', () => {
+        allDivs = grid.querySelectorAll('div');
         allDivs.forEach((divs) => {
             divs.style.background = back_color;
         });
+        color(pen_color);
     });
 
     // Changes Pen Color
@@ -82,7 +86,10 @@ function rerun() {
     // Changes Background Color
     const back = document.querySelector("#back");
     back.addEventListener("change", () => {
+        allDivs = grid.querySelectorAll('div');
         allDivs.forEach((divs) => {
+            console.log(divs.style.background);
+            console.log(back_color);
             if (!divs.style.background || equal_color(divs.style.background, back_color)) {
                 divs.style.background = back.value;
             } 
@@ -90,6 +97,7 @@ function rerun() {
         back_color = back.value;
         color(pen_color);
     });
+    color(pen_color);
 }
 
 rerun();
