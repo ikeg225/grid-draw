@@ -8,11 +8,29 @@
     <body>
         <h1>Skribbl.io Practice</h1>
         <div id="main">
-            <div id="colors">Test</div>
-            <canvas id="classic"></canvas>
+            <div id="sidebar">
+                <div>
+                    <input type="color" id="pen" name="pen" value="#000000">
+                    <button id="pen_use" for="pen">Pen Color</button>
+                </div>
+                <div>
+                    <input type="color" id="back" name="back" value="#FFFFFF">
+                    <label for="back">Background Color</label>
+                </div>
+                <button id="eraser">Eraser</button>
+
+                <button>Color Fill</button>
+                <button>Color Grab</button>
+
+                <button>Rainbow</button>
+                <button>Shading</button>
+                <button>Lighten</button>
+
+                <button>Grid Size</button>
+                <button id="grid_line">Grid Lines</button>
+                <button id="clear">Clear</button>
+            </div>
             <div id="grids"></div>
         </div>
-        <button id="eraser">Eraser</button>
-        <button id="clear">Clear</button>
     </body>
 </html>
