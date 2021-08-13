@@ -4,6 +4,7 @@ let leftMouseButtonOnlyDown = false;
 let back_color = "#FFFFFF";
 let pen_color = "#000000";
 let grid_num = 50;
+const colors = ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#4b0082", "#ee82ee"];
 
 // Checking if Left Click is Down
 function setLeftButtonState(e) {
@@ -36,71 +37,150 @@ function equal_color(rgb_clr, color2) {
     return hexToRgb(color2) == rgb_clr
 };
 
-// Needed to add this because when grid size is changed, the div variables are also changed
-function rerun() {
-    // Draws color on the Grid
-    let allDivs = grid.querySelectorAll('div');
-    
-    function color(clr) {
-        allDivs = grid.querySelectorAll('div');
-        allDivs.forEach((divs) => {
-            divs.addEventListener('mouseover', () => {
-                if (leftMouseButtonOnlyDown) {
+
+let allDivs = grid.querySelectorAll('div');
+let is_random = false;
+let is_shade = false;
+let is_bright = false;
+
+// Draws color on the Grid
+function color(clr, random, shade, bright) {
+    allDivs = grid.querySelectorAll('div');
+    allDivs.forEach((divs) => {
+        divs.addEventListener('click', () => {
+            if (random) {
+                divs.style.background = colors[Math.floor(Math.random()*colors.length)];
+            } else if (shade) {
+                if (divs.style.filter) {
+                    style = getComputedStyle(divs);
+                    num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
+                    divs.style.filter = "brightness(" + (num_style - 0.1) + ")";
+
+                    console.log(divs.style.filter)
+                } else {
+                    divs.style.filter = "brightness(0.9)";
+                }
+            } else if (bright) {
+                if (divs.style.filter) {
+                    style = getComputedStyle(divs);
+                    num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
+                    divs.style.filter = "brightness(" + (num_style + 0.1) + ")";
+
+                    console.log(divs.style.filter)
+                } else {
+                    divs.style.filter = "brightness(1.1)";
+                }   
+            }   else {
+                divs.style.background = clr;
+            }
+        });
+
+        divs.addEventListener('mouseover', () => {
+            if (leftMouseButtonOnlyDown) {
+                if (random) {
+                    divs.style.background = colors[Math.floor(Math.random()*colors.length)];
+                } else if (shade) {
+                    if (divs.style.filter) {
+                        style = getComputedStyle(divs);
+                        num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
+                        divs.style.filter = "brightness(" + (num_style - 0.1) + ")";
+                    } else {
+                        divs.style.filter = "brightness(0.9)";
+                    }
+                } else if (bright) {
+                    if (divs.style.filter) {
+                        style = getComputedStyle(divs);
+                        num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
+                        divs.style.filter = "brightness(" + (num_style + 0.1) + ")";
+                    } else {
+                        divs.style.filter = "brightness(1.1)";
+                    }   
+                }   else {
                     divs.style.background = clr;
                 }
-            });
+            }
         });
-    };
-
-    color(pen_color);
-
-    // Erases on the Grid
-    const eraser = document.querySelector("#eraser");
-    eraser.addEventListener('mouseover', () => {
-        color(back_color);
+        
     });
+};
 
-    // Clears the Grid
-    const clear = document.querySelector("#clear");
-    clear.addEventListener('click', () => {
-        allDivs = grid.querySelectorAll('div');
-        allDivs.forEach((divs) => {
-            divs.style.background = back_color;
-        });
-        color(pen_color);
+
+// Erases on the Grid
+const eraser = document.querySelector("#eraser");
+eraser.addEventListener('mouseover', () => {
+    color(back_color, is_random, is_shade, is_bright);
+});
+
+// Clears the Grid
+const clear = document.querySelector("#clear");
+clear.addEventListener('click', () => {
+    allDivs = grid.querySelectorAll('div');
+    allDivs.forEach((divs) => {
+        divs.style.background = back_color;
+        divs.style.filter = "";
     });
+    color(pen_color, is_random, is_shade, is_bright);
+});
 
-    // Changes Pen Color
-    const pen = document.querySelector("#pen");
-    pen.addEventListener("change", () => {
-        pen_color = pen.value;
-        color(pen_color);
+// Changes Pen Color
+const pen = document.querySelector("#pen");
+pen.addEventListener("change", () => {
+    pen_color = pen.value;
+    is_random = false;
+    is_shade = false;
+    is_bright = false;
+    color(pen_color, is_random, is_shade, is_bright);
+});
+
+// Random Pen Colors
+const rainbow = document.querySelector("#random");
+rainbow.addEventListener("click", () => {
+    is_random = true;
+    is_shade = false;
+    is_bright = false;
+    color(pen_color, is_random, is_shade, is_bright);
+});
+
+// Shade the colors
+const shade = document.querySelector("#shade");
+shade.addEventListener("click", () => {
+    is_shade = true;
+    is_random = false;
+    is_bright = false;
+    color(pen_color, is_random, is_shade, is_bright);
+});
+
+// Brighten the colors
+const bright = document.querySelector("#bright");
+bright.addEventListener("click", () => {
+    is_shade = false;
+    is_random = false;
+    is_bright = true;
+    color(pen_color, is_random, is_shade, is_bright);
+});
+
+// Select Pen
+const pen_sel = document.querySelector("#pen_use");
+pen_sel.addEventListener("click", () => {
+    is_random = false;
+    is_shade = false;
+    is_bright = false;
+    color(pen_color, is_random, is_shade, is_bright);
+});
+
+// Changes Background Color
+const back = document.querySelector("#back");
+back.addEventListener("change", () => {
+    allDivs = grid.querySelectorAll('div');
+    allDivs.forEach((divs) => {
+        if (!divs.style.background || equal_color(divs.style.background, back_color)) {
+            divs.style.background = back.value;
+            divs.style.filter = "";
+        } 
     });
-
-    // Select Pen
-    const pen_sel = document.querySelector("#pen_use");
-    pen_sel.addEventListener("click", () => {
-        color(pen_color);
-    })
-
-    // Changes Background Color
-    const back = document.querySelector("#back");
-    back.addEventListener("change", () => {
-        allDivs = grid.querySelectorAll('div');
-        allDivs.forEach((divs) => {
-            console.log(divs.style.background);
-            console.log(back_color);
-            if (!divs.style.background || equal_color(divs.style.background, back_color)) {
-                divs.style.background = back.value;
-            } 
-        });
-        back_color = back.value;
-        color(pen_color);
-    });
-    color(pen_color);
-}
-
-rerun();
+    color(pen_color, is_random, is_shade, is_bright);
+    back_color = back.value;
+});
 
 // Changes Grid Size
 const grid_size = document.querySelector("#slider");
@@ -115,5 +195,4 @@ grid_size.addEventListener("change", () => {
     grider(grid_num);
 
     grid = document.querySelector("#grids");
-    rerun();
 });
