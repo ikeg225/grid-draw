@@ -73,6 +73,7 @@ function color(clr, random, shade, bright) {
             }   else {
                 divs.style.background = clr;
             }
+            return
         });
 
         divs.addEventListener('mouseover', () => {
