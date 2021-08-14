@@ -5,6 +5,19 @@ let back_color = "#FFFFFF";
 let pen_color = "#000000";
 let grid_num = 50;
 const colors = ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#4b0082", "#ee82ee"];
+let allDivs = grid.querySelectorAll('div');
+let is_random = false;
+let is_shade = false;
+let is_bright = false;
+
+// Refreshes Grid so there is not multiple Event Listeners Attatched
+function refresh() {
+    let og = document.getElementById("grids");
+    let new_grid = og.cloneNode(true);
+    new_grid.setAttribute("id", "grids");
+    let main = document.getElementById("main");
+    main.replaceChild(new_grid, og);
+};
 
 // Checking if Left Click is Down
 function setLeftButtonState(e) {
@@ -37,26 +50,21 @@ function equal_color(rgb_clr, color2) {
     return hexToRgb(color2) == rgb_clr
 };
 
-
-let allDivs = grid.querySelectorAll('div');
-let is_random = false;
-let is_shade = false;
-let is_bright = false;
-
 // Draws color on the Grid
 function color(clr, random, shade, bright) {
+    grid = document.querySelector("#grids");
     allDivs = grid.querySelectorAll('div');
+
     allDivs.forEach((divs) => {
         divs.addEventListener('click', () => {
             if (random) {
+                divs.style.filter = "";
                 divs.style.background = colors[Math.floor(Math.random()*colors.length)];
             } else if (shade) {
                 if (divs.style.filter) {
                     style = getComputedStyle(divs);
                     num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
                     divs.style.filter = "brightness(" + (num_style - 0.1) + ")";
-
-                    console.log(divs.style.filter)
                 } else {
                     divs.style.filter = "brightness(0.9)";
                 }
@@ -65,12 +73,11 @@ function color(clr, random, shade, bright) {
                     style = getComputedStyle(divs);
                     num_style = Number(style.filter.replace(/[^0-9\.]+/g,""))
                     divs.style.filter = "brightness(" + (num_style + 0.1) + ")";
-
-                    console.log(divs.style.filter)
                 } else {
                     divs.style.filter = "brightness(1.1)";
                 }   
             }   else {
+                divs.style.filter = "";
                 divs.style.background = clr;
             }
             return
@@ -79,6 +86,7 @@ function color(clr, random, shade, bright) {
         divs.addEventListener('mouseover', () => {
             if (leftMouseButtonOnlyDown) {
                 if (random) {
+                    divs.style.filter = "";
                     divs.style.background = colors[Math.floor(Math.random()*colors.length)];
                 } else if (shade) {
                     if (divs.style.filter) {
@@ -97,6 +105,7 @@ function color(clr, random, shade, bright) {
                         divs.style.filter = "brightness(1.1)";
                     }   
                 }   else {
+                    divs.style.filter = "";
                     divs.style.background = clr;
                 }
             }
@@ -105,10 +114,16 @@ function color(clr, random, shade, bright) {
     });
 };
 
+color(pen_color, is_random, is_shade, is_bright);
 
 // Erases on the Grid
 const eraser = document.querySelector("#eraser");
-eraser.addEventListener('mouseover', () => {
+eraser.addEventListener('click', () => {
+    is_random = false;
+    is_shade = false;
+    is_bright = false;
+
+    refresh();
     color(back_color, is_random, is_shade, is_bright);
 });
 
@@ -120,6 +135,7 @@ clear.addEventListener('click', () => {
         divs.style.background = back_color;
         divs.style.filter = "";
     });
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -130,6 +146,8 @@ pen.addEventListener("change", () => {
     is_random = false;
     is_shade = false;
     is_bright = false;
+
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -139,6 +157,8 @@ rainbow.addEventListener("click", () => {
     is_random = true;
     is_shade = false;
     is_bright = false;
+
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -148,6 +168,8 @@ shade.addEventListener("click", () => {
     is_shade = true;
     is_random = false;
     is_bright = false;
+
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -157,6 +179,8 @@ bright.addEventListener("click", () => {
     is_shade = false;
     is_random = false;
     is_bright = true;
+
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -166,6 +190,7 @@ pen_sel.addEventListener("click", () => {
     is_random = false;
     is_shade = false;
     is_bright = false;
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
 });
 
@@ -179,6 +204,7 @@ back.addEventListener("change", () => {
             divs.style.filter = "";
         } 
     });
+    refresh();
     color(pen_color, is_random, is_shade, is_bright);
     back_color = back.value;
 });
@@ -196,4 +222,6 @@ grid_size.addEventListener("change", () => {
     grider(grid_num);
 
     grid = document.querySelector("#grids");
+    refresh();
+    color(pen_color, is_random, is_shade, is_bright);
 });
