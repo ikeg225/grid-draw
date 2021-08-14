@@ -214,7 +214,7 @@ const grid_size = document.querySelector("#slider");
 grid_size.addEventListener("change", () => {
     const txt = document.getElementById("slider_label")
     grid_num = grid_size.value
-    txt.innerHTML = "Grid Size: " + grid_num;
+    txt.innerHTML = "Grid Size: " + grid_num + " x " + grid_num;
 
     const grids = document.getElementById("grids");
     grids.innerHTML = '';

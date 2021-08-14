@@ -1,21 +1,46 @@
+body {
+    background-color: #1F2833;
+}
+
+@font-face {
+    font-family: Typo;
+    src: url("Typo Draft Demo.otf");
+}
+
+h1 {
+    font-family: Typo;
+    font-size: xxx-large;
+    text-align: center;
+    color: #C5C6C7;
+}
+
 #main {
     position: absolute;
     top: 50%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%);
-    width: 50%;
+    width: 60%;
 
     display: flex;
     flex-direction: row;
+    margin-top: 50px;
 }
 
 #sidebar {
     flex-basis: 20%;
-    margin-right: 20px;
 
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+
+    background-color: #0B0C10;
+    padding: 50px;
+    color: #C5C6C7;
+    border-radius: 20px 0px 0px 20px;
+    text-align: center;
+    font-size: medium;
+    font-family: sans-serif;
 }
 
 #grids {
@@ -35,3 +60,80 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+
+button {
+    color: #C5C6C7;
+    font-size: medium;
+    background-color: transparent;
+    border: 2px solid #C5C6C7;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 30px;
+    font-family: sans-serif;
+    width: 100%;
+}
+
+button:hover {
+    color: #45A29E;
+    border-color: #45A29E;
+}
+
+#slider {
+    align-self: center;
+    width: 80%;
+    padding: 0px;
+}
+
+#pen_use {
+    border: none;
+}
+
+#pen_color {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#back_color {
+    display: flex;
+    flex-direction: row;
+}
+
+#coloring input {
+    flex-basis: 20%;
+}
+
+.color_text {
+    flex-basis: 80%;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  background: transparent;
+  margin-bottom: 10px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 14px;
+  cursor: pointer;
+  animate: 0.2s;
+  box-shadow: 1px 1px 1px #50555C;
+  background: #C5C6C7;
+  border-radius: 14px;
+  border: 0px solid #000000;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  box-shadow: 0px 0px 0px #000000;
+  border: 0px solid #000000;
+  height: 20px;
+  width: 40px;
+  border-radius: 12px;
+  background: #45A29E;
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -3px;
+}
+  
+  
