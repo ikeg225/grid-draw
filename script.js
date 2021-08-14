@@ -2,7 +2,7 @@
 let grid = document.querySelector("#grids");
 let leftMouseButtonOnlyDown = false;
 let back_color = "#FFFFFF";
-let pen_color = "#000000";
+let pen_color = "#45A29E";
 let grid_num = 50;
 const colors = ["#ff0000", "#ffa500", "#ffff00", "#008000", "#0000ff", "#4b0082", "#ee82ee"];
 let allDivs = grid.querySelectorAll('div');
